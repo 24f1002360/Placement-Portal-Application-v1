@@ -7,6 +7,75 @@
 
     </head>
     <body>
-       HELLO! {{username}} 
+        <h2>Admin Dashboard</h2>
+
+        <p>Total Students: {{ students|length }}</p>
+        <p>Total Companies: {{ companies|length }}</p>
+        <p>Total Drives: {{ drives|length }}</p>
+        <p>Total Applications: {{ applications|length }}</p>
+
+        <h3>Pending Company Approvals</h3>
+
+        <table border="1">
+        <tr>
+        <th>Company Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Action</th>
+        </tr>
+
+        {% for company in companies %}
+        {% if company.approval_status == "pending" %}
+
+        <tr>
+        <td>{{ company.company_name }}</td>
+        <td>{{ company.email }}</td>
+        <td>{{ company.approval_status }}</td>
+
+        <td>
+        <a href="/approve_company/{{ company.id }}">Approve</a>
+        </td>
+        </tr>
+
+        {% endif %}
+        {% endfor %}
+        </table>
+
+        <h3>Registered Students</h3>
+        <table border="1">
+        <tr>
+        <th>Name</th>
+        <th>Email</th>
+        </tr>
+
+        {% for student in students %}
+
+        <tr>
+        <td>{{ student.name }}</td>
+        <td>{{ student.email }}</td>
+        </tr>
+
+        {% endfor %} 
+        </table>
+
+        <h3>Companies</h3>
+        <table border="1">
+        <tr>
+        <th>Company</th>
+        <th>Email</th>
+        <th>Status</th>
+        </tr>
+
+        {% for company in companies %}
+
+        <tr>
+        <td>{{ company.company_name }}</td>
+        <td>{{ company.email }}</td>
+        <td>{{ company.approval_status }}</td>
+        </tr>
+
+        {% endfor %}
+        </table>
+        
     </body>
 </html>

@@ -2,6 +2,7 @@ import os
 print("RUNNING FROM:", os.getcwd())
 print("APP FILE:", __file__)
 
+
 from flask import Flask ,render_template,request,redirect,url_for
 from model.models import db, Admin, Student, Company, Drive, Application
 
@@ -77,14 +78,43 @@ def register():
         return redirect("/login")
         
         
+      
+        
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_dashboard():
-        return render_template("admin.html")
+        students = Student.query.all()
+        companies = Company.query.all()
+        drives = Drive.query.all()
+        applications= Application.query.all()
+        return render_template("admin.html",
+                               students=students,
+                               companies=companies,
+                               drives=drives,
+                               applications=applications
+                           )
+
+@app.route("/approve_company/<int:company_id>")
+def approve_company(company_id):
+
+    company = Company.query.get(company_id)
+
+    company.approval_status = "approved"
+
+    db.session.commit()
+
+    return redirect("/admin")
+
+
     
 @app.route("/student")
 def student_dashboard():
-    return render_template("student.html")
+    return render_template("student.html",
+                           students=students,
+                           companies=companies,
+                           drives=drives,
+                           applications=applications
+                           )
 
 
 @app.route("/company")
